@@ -31,7 +31,7 @@ func main() {
 
 	fmt.Println("userService on port:", cfg.Port)
 
-	s := services.Sever{
+	s := services.Server{
 		DB:      db,
 		RedisDB: redisDB,
 	}
