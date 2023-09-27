@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "./pkg/pb";
+
+service UserSvc {
+    rpc CreatUser (CreatUserRequest) returns(CommonResponse){}
+    rpc UpdateUser (UpdateUserRequest) returns(CommonResponse){}
+    rpc GetUser (GetUserRequest) returns (GetUserResponce){}
+    rpc DeleteUser(DeleteUserRequest) returns(CommonResponse){}
+}
+
+message CreatUserRequest{
+	string Name       =1;
+	string HouseNo    =2;
+	string City       =3;   
+	string Email      =4; 
+	int64 PhoneNumber =5;
+}
+ message UpdateUserRequest{
+    uint64 id         =1;
+    string Name       =2; 
+	string HouseNo    =3;
+	string City       =4;
+	string Email      =5;
+	int64 PhoneNumber =6;
+ }
+
+message GetUserRequest {
+    uint64 id = 1;
+}
+
+message DeleteUserRequest{
+    uint64 id = 1;
+}
+
+
+message CommonResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+message GetUserResponce {
+    string Name       =1;
+	string HouseNo    =2;
+	string City       =3;   
+	string Email      =4; 
+	int64 PhoneNumber =5;
+    string error      =6;
+ }
+
