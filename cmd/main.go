@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 	"x-tentioncrew/user-service/pkg/config"
-	"x-tentioncrew/user-service/pkg/db"
+	dbconnetion "x-tentioncrew/user-service/pkg/db"
 	"x-tentioncrew/user-service/pkg/pb"
 	"x-tentioncrew/user-service/pkg/services"
 
@@ -17,10 +17,12 @@ func main() {
 	if err != nil {
 		log.Fatalln("failed at config", err.Error())
 	}
-	db, dbErr := db.ConnectDB(cfg)
+	db, dbErr := dbconnetion.ConnectDB(cfg)
 	if dbErr != nil {
-		log.Fatalln("db connection failed ", err.Error())
+		log.Fatalln("db connection failed ", dbErr.Error())
 	}
+
+	redisDB := dbconnetion.ConnectRedis(cfg)
 
 	lis, lisErr := net.Listen("tcp", cfg.Port)
 	if lisErr != nil {
@@ -28,8 +30,10 @@ func main() {
 	}
 
 	fmt.Println("userService on port:", cfg.Port)
+
 	s := services.Sever{
-		DB: db,
+		DB:      db,
+		RedisDB: redisDB,
 	}
 	grpcServer := grpc.NewServer()
 

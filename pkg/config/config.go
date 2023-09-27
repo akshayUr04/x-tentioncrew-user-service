@@ -12,6 +12,8 @@ type Config struct {
 	DBUser     string `mapstructure:"DBUSER"`
 	DBPort     string `mapstructure:"DBPORT"`
 	DBPassword string `mapstructure:"DBPASSWORD"`
+	RedisPort  string `mapstructure:"REDISPORT"`
+	RedisHost  string `mapstructure:"REDISHOST"`
 }
 
 var envs = []string{"PORT", "DBHOST", "DBNAME", "DBUSER", "DBPORT", "DBPASSWORD"}
