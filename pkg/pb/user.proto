@@ -5,9 +5,9 @@ package product;
 option go_package = "./pkg/pb";
 
 service UserSvc {
-    rpc CreatUser (CreatUserRequest) returns(CommonResponse){}
+    rpc CreateUser (CreatUserRequest) returns(CommonResponse){}
     rpc UpdateUser (UpdateUserRequest) returns(CommonResponse){}
-    rpc GetUser (GetUserRequest) returns (GetUserResponce){}
+    rpc GetUserById (GetUserRequest) returns (GetUserResponce){}
     rpc DeleteUser(DeleteUserRequest) returns(CommonResponse){}
 }
 
