@@ -110,7 +110,11 @@ func (s *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb
 	err := s.DB.Raw(updatequery, req.Name, req.HouseName, req.City, req.Email, req.PhoneNumber, req.Id).Scan(&userDetails).Error
 	if err != nil {
 		fmt.Println("cant update user in psql", err)
-		return &pb.CommonResponse{Error: "cant update user"}, err
+		return &pb.CommonResponse{Error: "cant update user", Status: http.StatusBadRequest}, err
+	}
+
+	if userDetails.Id == 0 {
+		return &pb.CommonResponse{Error: "cant update user", Status: http.StatusBadRequest}, fmt.Errorf("no such user found")
 	}
 
 	// update cache if exists
@@ -132,6 +136,22 @@ func (s *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb
 
 func createRedisId(Id uint) string {
 	return fmt.Sprintf("userId:%v", Id)
+}
+
+func (s *Server) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.CommonResponse, error) {
+	deleteQry := `DELETE FROM users WHERE id = $1`
+
+	if err := s.DB.Exec(deleteQry, uint(req.Id)).Error; err != nil {
+		return &pb.CommonResponse{Status: http.StatusBadRequest, Error: "cant delete user"}, err
+	}
+
+	// remove the data from redis
+	redisKey := createRedisId(uint(req.Id))
+	err := s.RedisDB.Del(ctx, redisKey).Err()
+	if err != nil {
+		return &pb.CommonResponse{Status: http.StatusBadRequest, Error: "cant delete user from redis"}, err
+	}
+	return &pb.CommonResponse{Status: http.StatusOK, Error: ""}, err
 }
 
 func toJson(val []byte) models.User {
