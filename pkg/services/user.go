@@ -154,6 +154,23 @@ func (s *Server) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb
 	return &pb.CommonResponse{Status: http.StatusOK, Error: ""}, err
 }
 
+func (s *Server) GetAllUserData(ctx context.Context, req *pb.GetAllUserDataReq) (*pb.GetAllUserDataResult, error) {
+	var (
+		name  []string
+		count int
+	)
+	getCount := `SELECT COUNT(id) AS count FROM users`
+	getNames := `SELECT name FROM users`
+	if err := s.DB.Raw(getCount).Scan(&count).Error; err != nil {
+		return nil, err
+	}
+	if err := s.DB.Raw(getNames).Scan(&name).Error; err != nil {
+		return nil, err
+	}
+	return &pb.GetAllUserDataResult{Name: name}, nil
+
+}
+
 func toJson(val []byte) models.User {
 	user := models.User{}
 	err := json.Unmarshal(val, &user)

@@ -1,0 +1,32 @@
+## Follow these steps to Run and Test User Service locally
+
+#### Clone The Repository of User Servic
+
+git clone https://github.com/akshayUr04/x-tentioncrew-user-service.git
+
+#### Change Directory To API Gateway
+
+cd ./x-tentioncrew-user-service
+
+
+#### Install The dependencies
+
+go mod tidy 
+
+
+#### Setup The Env
+.env
+PORT="port that you wan't to run API Gateway"
+USER_SERVICE_URL="Port that the User Service want to running"
+DBHOST="database host"
+DBNAME="database name"
+DBUSER="database user"
+DBPORT="database port"
+DBPASSWORD="database password"
+REDISPORT="redis port"
+REDISHOST="redis host"
+
+
+#### Run The Application
+
+go run ./cmd/main.go

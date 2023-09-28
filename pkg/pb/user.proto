@@ -9,6 +9,7 @@ service UserSvc {
     rpc UpdateUser (UpdateUserRequest) returns(CommonResponse){}
     rpc GetUserById (GetUserRequest) returns (GetUserResponce){}
     rpc DeleteUser(DeleteUserRequest) returns(CommonResponse){}
+	rpc GetAllUserData(GetAllUserDataReq)returns(GetAllUserDataResult){}
 }
 
 message CreatUserRequest{
@@ -50,3 +51,12 @@ message GetUserResponce {
     string error       =6;
  }
 
+ message GetAllUserDataReq{
+
+ }
+ 
+ message GetAllUserDataResult {
+	 repeated string Name  =1;
+ }
+ 
+ 

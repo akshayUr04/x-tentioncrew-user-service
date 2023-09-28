@@ -26,6 +26,7 @@ type UserSvcClient interface {
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	GetUserById(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponce, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	GetAllUserData(ctx context.Context, in *GetAllUserDataReq, opts ...grpc.CallOption) (*GetAllUserDataResult, error)
 }
 
 type userSvcClient struct {
@@ -72,6 +73,15 @@ func (c *userSvcClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, o
 	return out, nil
 }
 
+func (c *userSvcClient) GetAllUserData(ctx context.Context, in *GetAllUserDataReq, opts ...grpc.CallOption) (*GetAllUserDataResult, error) {
+	out := new(GetAllUserDataResult)
+	err := c.cc.Invoke(ctx, "/product.UserSvc/GetAllUserData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserSvcServer is the server API for UserSvc service.
 // All implementations must embed UnimplementedUserSvcServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type UserSvcServer interface {
 	UpdateUser(context.Context, *UpdateUserRequest) (*CommonResponse, error)
 	GetUserById(context.Context, *GetUserRequest) (*GetUserResponce, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*CommonResponse, error)
+	GetAllUserData(context.Context, *GetAllUserDataReq) (*GetAllUserDataResult, error)
 	mustEmbedUnimplementedUserSvcServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedUserSvcServer) GetUserById(context.Context, *GetUserRequest) 
 }
 func (UnimplementedUserSvcServer) DeleteUser(context.Context, *DeleteUserRequest) (*CommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedUserSvcServer) GetAllUserData(context.Context, *GetAllUserDataReq) (*GetAllUserDataResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUserData not implemented")
 }
 func (UnimplementedUserSvcServer) mustEmbedUnimplementedUserSvcServer() {}
 
@@ -184,6 +198,24 @@ func _UserSvc_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserSvc_GetAllUserData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllUserDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserSvcServer).GetAllUserData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/product.UserSvc/GetAllUserData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserSvcServer).GetAllUserData(ctx, req.(*GetAllUserDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserSvc_ServiceDesc is the grpc.ServiceDesc for UserSvc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var UserSvc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _UserSvc_DeleteUser_Handler,
+		},
+		{
+			MethodName: "GetAllUserData",
+			Handler:    _UserSvc_GetAllUserData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
