@@ -52,7 +52,6 @@ func (s *Server) CreateUser(ctx context.Context, req *pb.CreatUserRequest) (*pb.
 }
 
 func (s *Server) GetUserById(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponce, error) {
-	// var user *pb.GetUserResponce
 	var userDetails models.User
 	//Check if the user is present in cache if yes return it
 	redisKey := createRedisId(uint(req.Id))
@@ -154,7 +153,7 @@ func (s *Server) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb
 	return &pb.CommonResponse{Status: http.StatusOK, Error: ""}, err
 }
 
-func (s *Server) GetAllUserData(ctx context.Context, req *pb.GetAllUserDataReq) (*pb.GetAllUserDataResult, error) {
+func (s *Server) GetUserData(ctx context.Context, req *pb.GetAllUserDataReq) (*pb.GetAllUserDataResult, error) {
 	var (
 		name  []string
 		count int

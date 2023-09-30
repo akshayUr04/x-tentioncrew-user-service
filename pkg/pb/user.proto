@@ -9,7 +9,7 @@ service UserSvc {
     rpc UpdateUser (UpdateUserRequest) returns(CommonResponse){}
     rpc GetUserById (GetUserRequest) returns (GetUserResponce){}
     rpc DeleteUser(DeleteUserRequest) returns(CommonResponse){}
-	rpc GetAllUserData(GetAllUserDataReq)returns(GetAllUserDataResult){}
+	rpc GetUserData(GetAllUserDataReq)returns(GetAllUserDataResult){}
 }
 
 message CreatUserRequest{
