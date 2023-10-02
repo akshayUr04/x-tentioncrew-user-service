@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	Port       string `mapstructure:"PORT"`
+	UserPort   string `mapstructure:"USERPORT"`
 	DBHost     string `mapstructure:"DBHOST"`
 	DBName     string `mapstructure:"DBNAME"`
 	DBUser     string `mapstructure:"DBUSER"`
@@ -16,7 +16,7 @@ type Config struct {
 	RedisHost  string `mapstructure:"REDISHOST"`
 }
 
-var envs = []string{"PORT", "DBHOST", "DBNAME", "DBUSER", "DBPORT", "DBPASSWORD"}
+var envs = []string{"USERPORT", "DBHOST", "DBNAME", "DBUSER", "DBPORT", "DBPASSWORD"}
 
 func LoadConfig() (cfg Config, err error) {
 	var config Config

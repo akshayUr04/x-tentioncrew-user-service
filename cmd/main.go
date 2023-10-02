@@ -24,12 +24,12 @@ func main() {
 
 	redisDB := dbconnetion.ConnectRedis(cfg)
 
-	lis, lisErr := net.Listen("tcp", cfg.Port)
+	lis, lisErr := net.Listen("tcp", cfg.UserPort)
 	if lisErr != nil {
 		log.Fatalln("failed to listing", lisErr.Error())
 	}
 
-	fmt.Println("userService on port:", cfg.Port)
+	fmt.Println("userService on port:", cfg.UserPort)
 
 	s := services.Server{
 		DB:      db,
